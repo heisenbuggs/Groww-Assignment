@@ -1,0 +1,13 @@
+.controlsCard {
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-top: 20px;
+    border-radius: 7px;
+}
+
+.btn {
+    padding: 2px;
+    width: 120px;
+    margin: 9px 5px 0 0;
+    float: right;
+}
