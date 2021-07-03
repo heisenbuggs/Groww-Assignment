@@ -88,21 +88,37 @@ const Controls = () => {
 
   useEffect(() => {
     var val = city.toUpperCase();
+    if(localStorage.getItem("favourite")===null) {
+      localStorage.setItem("favourite", JSON.stringify([]));
+    }
     if (localStorage.getItem(val)) {
       console.log("Data Grabbed!!!");
-      setData(JSON.parse(localStorage.getItem(val)));
+      const item = JSON.parse(localStorage.getItem(val));
+      const now = new Date();
+      if (now.getTime() > item.expiry) {
+        localStorage.removeItem(val);
+      } else {
+        setData(item.data);
+      }
       setIsLoaded(true);
       return;
-    } else {
+    }
+
+    if (localStorage.getItem(val)===null) {
       var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
       fetch(apiLink)
         .then((res) => {
           return res.json();
         })
         .then((data) => {
+          const now = new Date();
           data = data.map((data) => ({ ...data, favourite: false }));
           setData(data);
-          localStorage.setItem(val, JSON.stringify(data));
+          const item = {
+            data: data,
+            expiry: now.getTime() + 60*6000, // 1 hour Expiry Limit
+          };
+          localStorage.setItem(val, JSON.stringify(item));
           setIsLoaded(true);
         })
         .catch((err) => {
@@ -114,8 +130,18 @@ const Controls = () => {
   const fetchapi = (val) => {
     if (localStorage.getItem(val)) {
       console.log("Data Grabbed!!!");
-      setData(JSON.parse(localStorage.getItem(val)));
-    } else {
+      const item = JSON.parse(localStorage.getItem(val));
+      const now = new Date();
+      if (now.getTime() > item.expiry) {
+        localStorage.removeItem(val);
+      } else {
+        setData(item.data);
+      }
+      setIsLoaded(true);
+      return;
+    }
+
+    if (localStorage.getItem(val) === null) {
       setIsLoaded(false);
       var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
       fetch(apiLink)
@@ -123,8 +149,14 @@ const Controls = () => {
           return res.json();
         })
         .then((data) => {
+          const now = new Date();
+          data = data.map((data) => ({ ...data, favourite: false }));
           setData(data);
-          localStorage.setItem(val, JSON.stringify(data));
+          const item = {
+            data: data,
+            expiry: now.getTime() + 60*6000, // 1 hour Expiry Limit
+          };
+          localStorage.setItem(val, JSON.stringify(item));
           setIsLoaded(true);
         })
         .catch((err) => {
@@ -289,7 +321,7 @@ const Controls = () => {
             </Grid>
           </Grid>
         </div>
-        <TableCard data={data} category={category} />
+        <TableCard data={data} category={category} val={city.toUpperCase()}/>
       </div>
     );
 };

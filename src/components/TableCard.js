@@ -56,11 +56,11 @@ const columns = [
   },
 ];
 
-const TableCard = ({ data, category }) => {
+const TableCard = ({ data, category, val }) => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const originalRows = data;
+  var originalRows = data;
   const [rows, setRows] = useState(originalRows);
   const [searched, setSearched] = useState("");
 
@@ -85,6 +85,34 @@ const TableCard = ({ data, category }) => {
   const cancelSearch = () => {
     setSearched("");
     requestSearch(searched);
+  };
+
+  const favClick = (id) => {
+    originalRows.map((row) => {
+      if (row.ifsc === id) {
+        row.favourite = !row.favourite;
+      }
+    });
+    const item = JSON.parse(localStorage.getItem(val));
+    const newItem = {
+      data : originalRows,
+      expiry : item.expiry
+    }
+    const data = originalRows.find(row => row.ifsc===id);
+    var oldFav = JSON.parse(localStorage.getItem("favourite"));
+    // if data is present in oldfav then remove it else push it and update the localstorage of favourite
+    var flag = true;
+    var newFav = []
+    oldFav.map((row) => {
+      if(row.ifsc!==data.ifsc) {
+        newFav.push(row);
+      } 
+      else flag = false;
+    })
+    if(flag) newFav.push(data);
+    localStorage.setItem("favourite", JSON.stringify(newFav));
+    localStorage.setItem(val, JSON.stringify(newItem));
+    setRows(originalRows);
   };
 
   return (
@@ -138,9 +166,15 @@ const TableCard = ({ data, category }) => {
                                 <CallMade />
                               </Link>
                             )}
-                            {column.id === "favourite" && (
-                              <div>
+                            {column.id === "favourite" && !row.favourite && (
+                              <div onClick={() => favClick(row.ifsc)}>
                                 <FavoriteBorder />
+                              </div>
+                            )}
+                            {column.id === "favourite" && row.favourite && (
+                              <div onClick={() => favClick(row.ifsc)}>
+                                {console.log(row.favourite)}
+                                <Favorite style={{ color: "#43CF99" }} />
                               </div>
                             )}
                           </TableCell>
