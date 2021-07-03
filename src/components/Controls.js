@@ -88,34 +88,49 @@ const Controls = () => {
 
   useEffect(() => {
     var val = city.toUpperCase();
-    var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
-    fetch(apiLink)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setData(data);
-        setIsLoaded(true);
-      })
-      .catch((err) => {
-        console.log("Error fetching data : ", err);
-      });
+    if (localStorage.getItem(val)) {
+      console.log("Data Grabbed!!!");
+      setData(JSON.parse(localStorage.getItem(val)));
+      setIsLoaded(true);
+      return;
+    } else {
+      var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
+      fetch(apiLink)
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          data = data.map((data) => ({ ...data, favourite: false }));
+          setData(data);
+          localStorage.setItem(val, JSON.stringify(data));
+          setIsLoaded(true);
+        })
+        .catch((err) => {
+          console.log("Error fetching data : ", err);
+        });
+    }
   }, []);
 
   const fetchapi = (val) => {
-    setIsLoaded(false);
-    var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
-    fetch(apiLink)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setData(data);
-        setIsLoaded(true);
-      })
-      .catch((err) => {
-        console.log("Error fetching data : ", err);
-      });
+    if (localStorage.getItem(val)) {
+      console.log("Data Grabbed!!!");
+      setData(JSON.parse(localStorage.getItem(val)));
+    } else {
+      setIsLoaded(false);
+      var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
+      fetch(apiLink)
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          setData(data);
+          localStorage.setItem(val, JSON.stringify(data));
+          setIsLoaded(true);
+        })
+        .catch((err) => {
+          console.log("Error fetching data : ", err);
+        });
+    }
   };
 
   const handleChange = (event, newValue) => {
