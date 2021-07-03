@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import BankDetails from "./BankDetails";
 import Controls from "./Controls";
 import Favourite from "./Favourite";
+import NotFoundPage from "./NotFoundPage";
 
 const Main = () => {
   return (
@@ -22,6 +23,7 @@ const Main = () => {
           <Route path="/favourites">
             <Favourite />
           </Route>
+          <Route component={NotFoundPage}/>
         </Switch>
       </BrowserRouter>
     </Container>

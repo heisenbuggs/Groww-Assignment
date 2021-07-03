@@ -17,8 +17,10 @@ import {
 } from "reactstrap";
 import PropTypes from "prop-types";
 import TableCard from "./TableCard";
-import { BrowserRouter, Redirect, Route, Switch, Link } from "react-router-dom";
+import brand from "../assets/Groww-Logo.png";
+import { Link } from "react-router-dom";
 import Favourite from "./Favourite";
+import Loader from "react-loader-spinner";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -78,13 +80,15 @@ const Controls = () => {
   const [value, setValue] = useState(0);
   const [firstdropdownOpen, setDropdownOpen] = useState(false);
   const [seconddropdownOpen, setsecondDropDownOpen] = useState(false);
-  const [city, setCity] = useState("MUMBAI");
+  const [city, setCity] = useState("Mumbai");
   const [cat, setCat] = useState("None");
   const [isLoaded, setIsLoaded] = useState(false);
   const [data, setData] = useState([]);
+  const [category, setCategory] = useState("");
 
   useEffect(() => {
-    var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${city}`;
+    var val = city.toUpperCase();
+    var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
     fetch(apiLink)
       .then((res) => {
         return res.json();
@@ -99,7 +103,6 @@ const Controls = () => {
   }, []);
 
   const fetchapi = (val) => {
-    setCity(val);
     setIsLoaded(false);
     var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
     fetch(apiLink)
@@ -121,7 +124,28 @@ const Controls = () => {
   const toggle = () => setDropdownOpen((prevState) => !prevState);
   const toggletwo = () => setsecondDropDownOpen((prevState) => !prevState);
 
-  if (!isLoaded) return <div>Loading....</div>;
+  if (!isLoaded)
+    return (
+      <div className="loadingDiv">
+        <img
+          src={brand}
+          height={100}
+          width={367}
+          alt="logo"
+          className="loading"
+        />
+        <div className="dots">
+          <Loader
+            type="MutatingDots"
+            height={120}
+            width={120}
+            color="#597AFB"
+            secondaryColor="#43C799"
+            timeout={1000000}
+          />
+        </div>
+      </div>
+    );
   else
     return (
       <div>
@@ -133,10 +157,13 @@ const Controls = () => {
                 onChange={handleChange}
                 classes={{ indicator: classes.indicator }}
               >
-                <Link to="/" style={{textDecoration:"none", color: "#000"}}>
+                <Link to="/" style={{ textDecoration: "none", color: "#000" }}>
                   <StyledTab label="All Banks" {...a11yProps(0)} />
                 </Link>
-                <Link to="/favourites" style={{textDecoration:"none", color: "#000"}}>
+                <Link
+                  to="/favourites"
+                  style={{ textDecoration: "none", color: "#000" }}
+                >
                   <StyledTab label="Favourites" {...a11yProps(1)} />
                 </Link>
               </Tabs>
@@ -156,20 +183,45 @@ const Controls = () => {
                       {city}
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem onClick={() => fetchapi("MUMBAI")}>
+                      <DropdownItem
+                        onClick={() => {
+                          setCity("Mumbai");
+                          fetchapi("MUMBAI");
+                        }}
+                      >
                         Mumbai
                       </DropdownItem>
-                      <DropdownItem onClick={() => fetchapi("BHOPAL")}>
+                      <DropdownItem
+                        onClick={() => {
+                          setCity("Bhopal");
+                          fetchapi("BHOPAL");
+                        }}
+                      >
                         Bhopal
                       </DropdownItem>
-                      <DropdownItem onClick={() => fetchapi("INDORE")}>
+                      <DropdownItem
+                        onClick={() => {
+                          setCity("Indore");
+                          fetchapi("INDORE");
+                        }}
+                      >
                         Indore
                       </DropdownItem>
-                      <DropdownItem onClick={() => fetchapi("DELHI")}>
+                      <DropdownItem
+                        onClick={() => {
+                          setCity("Delhi");
+                          fetchapi("DELHI");
+                        }}
+                      >
                         Delhi
                       </DropdownItem>
-                      <DropdownItem onClick={() => fetchapi("BANGALORE")}>
-                        Bangalore
+                      <DropdownItem
+                        onClick={() => {
+                          setCity("Lucknow");
+                          fetchapi("LUCKNOW");
+                        }}
+                      >
+                        Lucknow
                       </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
@@ -183,17 +235,37 @@ const Controls = () => {
                       {cat}
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem onClick={() => setCat("None")}>
+                      <DropdownItem
+                        onClick={() => {
+                          setCat("None");
+                          setCategory("");
+                        }}
+                      >
                         None
                       </DropdownItem>
-                      <DropdownItem onClick={() => setCat("IFSC")}>
+                      <DropdownItem
+                        onClick={() => {
+                          setCat("IFSC");
+                          setCategory("ifsc");
+                        }}
+                      >
                         IFSC
                       </DropdownItem>
-                      <DropdownItem onClick={() => setCat("Bank Name")}>
+                      <DropdownItem
+                        onClick={() => {
+                          setCat("Bank Name");
+                          setCategory("bank_name");
+                        }}
+                      >
                         Bank Name
                       </DropdownItem>
-                      <DropdownItem onClick={() => setCat("Bank ID")}>
-                        Bank ID
+                      <DropdownItem
+                        onClick={() => {
+                          setCat("Branch");
+                          setCategory("branch");
+                        }}
+                      >
+                        Branch
                       </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
@@ -202,7 +274,7 @@ const Controls = () => {
             </Grid>
           </Grid>
         </div>
-        <TableCard data={data} />
+        <TableCard data={data} category={category} />
       </div>
     );
 };

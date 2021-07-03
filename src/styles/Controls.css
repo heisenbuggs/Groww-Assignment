@@ -11,3 +11,21 @@
     margin: 9px 5px 0 0;
     float: right;
 }
+
+.loadingDiv {
+    height: 100%;
+    display: grid;
+    margin-top: 100px;
+}
+
+.loading {
+    align-self: center;
+    justify-self: center;
+    margin: 100px auto;
+}
+
+.dots {
+    align-self: center;
+    justify-self: center;
+    margin-top: -30px;
+}

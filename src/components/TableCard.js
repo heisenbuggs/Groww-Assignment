@@ -26,7 +26,8 @@ const useStyles = makeStyles({
 
 const columns = [
   { id: "bank_id", label: "Bank ID", minWidth: 100 },
-  { id: "bank_name", label: "Bank Name", minWidth: 100 },
+  { id: "bank_name", label: "Bank Name", minWidth: 150 },
+  { id: "branch", label: "Branch", minWidth: 100 },
   {
     id: "address",
     label: "Address",
@@ -35,9 +36,9 @@ const columns = [
     format: (value) => value.toLocaleString("en-US"),
   },
   {
-    id: "district",
-    label: "District",
-    minWidth: 150,
+    id: "city",
+    label: "City",
+    minWidth: 100,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
@@ -55,12 +56,12 @@ const columns = [
   },
 ];
 
-const TableCard = ({ data }) => {
+const TableCard = ({ data, category }) => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const rows = data;
-  const [Rows, setRows] = useState(rows);
+  const originalRows = data;
+  const [rows, setRows] = useState(originalRows);
   const [searched, setSearched] = useState("");
 
   const handleChangePage = (event, newPage) => {
@@ -72,9 +73,11 @@ const TableCard = ({ data }) => {
     setPage(0);
   };
 
-  const requestSearch = (searchedVal) => {
-    const filteredRows = rows.filter((row) => {
-      return row.name.toLowerCase().includes(searchedVal.toLowerCase());
+  const requestSearch = (searchVal) => {
+    const filteredRows = originalRows.filter((row) => {
+      if (category !== "")
+        return row[category].toLowerCase().includes(searchVal.toLowerCase());
+      else return !null;
     });
     setRows(filteredRows);
   };
@@ -86,12 +89,12 @@ const TableCard = ({ data }) => {
 
   return (
     <div className="tableCard">
-      <SearchBar
-        value={searched}
-        onChange={(searchVal) => requestSearch(searchVal)}
-        onCancelSearch={() => cancelSearch()}
-      />
       <Paper className={classes.root}>
+        <SearchBar
+          value={searched}
+          onChange={(searchVal) => requestSearch(searchVal)}
+          onCancelSearch={() => cancelSearch()}
+        />
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -122,9 +125,18 @@ const TableCard = ({ data }) => {
                         const value = row[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {column.format && column.id!=="bank_name" ? column.format(value) : value}
-                            {column.id==="bank_name" && (
-                                <Link to={`/bank-details/${row["ifsc"]}`}><CallMade /></Link>
+                            {column.format && column.id !== "bank_name"
+                              ? column.format(value)
+                              : value}
+                            {column.id === "bank_name" && (
+                              <Link
+                                to={{
+                                  pathname: `/bank-details/${row["ifsc"]}`,
+                                  state: { row: row },
+                                }}
+                              >
+                                <CallMade />
+                              </Link>
                             )}
                             {column.id === "favourite" && (
                               <div>
