@@ -131,6 +131,7 @@ const Controls = () => {
     if (localStorage.getItem("favourite") === null) {
       localStorage.setItem("favourite", JSON.stringify([]));
     }
+
     if (localStorage.getItem(val)) {
       const item = JSON.parse(localStorage.getItem(val));
       const now = new Date();
@@ -143,7 +144,7 @@ const Controls = () => {
       return;
     }
 
-    if (localStorage.getItem(val) === null) {
+    if (localStorage.getItem(city.toUpperCase()) === null) {
       var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
       fetch(apiLink)
         .then((res) => {

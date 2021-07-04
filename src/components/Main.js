@@ -1,6 +1,6 @@
 import { Container } from "@material-ui/core";
 import React from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, HashRouter } from "react-router-dom";
 import BankDetails from "./BankDetails";
 import Controls from "./Controls";
 import Favourite from "./Favourite";
@@ -9,7 +9,7 @@ import NotFoundPage from "./NotFoundPage";
 const Main = () => {
   return (
     <Container>
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <Route path="/" exact>
             <Redirect to="/all-banks" />
@@ -25,7 +25,7 @@ const Main = () => {
           </Route>
           <Route component={NotFoundPage}/>
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     </Container>
   );
 };
