@@ -128,6 +128,7 @@ const Controls = () => {
 
   useEffect(() => {
     var val = city.toUpperCase();
+    console.log(val+"CITY");
     if (localStorage.getItem("favourite") === null) {
       localStorage.setItem("favourite", JSON.stringify([]));
     }
