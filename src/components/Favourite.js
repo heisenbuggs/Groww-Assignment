@@ -16,7 +16,6 @@ import {
 import {
   CallMade,
   Favorite,
-  FavoriteBorder,
   FavoriteBorderOutlined,
   List,
 } from "@material-ui/icons";
@@ -116,10 +115,6 @@ const Favourite = () => {
   const [openinfo, setOpeninfo] = useState(false);
   var vertical = "bottom",
     horizontal = "right";
-
-  const handleClick = () => {
-    setOpenSuccess(true);
-  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") return;
@@ -267,16 +262,6 @@ const Favourite = () => {
                                 >
                                   <CallMade />
                                 </Link>
-                              )}
-                              {column.id === "favourite" && !row.favourite && (
-                                <div
-                                  onClick={() => {
-                                    favClick(row.ifsc);
-                                    handleClick();
-                                  }}
-                                >
-                                  <FavoriteBorder />
-                                </div>
                               )}
                               {column.id === "favourite" && row.favourite && (
                                 <div

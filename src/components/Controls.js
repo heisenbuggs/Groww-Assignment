@@ -146,7 +146,7 @@ const Controls = () => {
       return;
     }
 
-    if (localStorage.getItem(city.toUpperCase()) === null) {
+    if (localStorage.getItem(val) === null) {
       var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
       fetch(apiLink)
         .then((res) => {
@@ -197,7 +197,7 @@ const Controls = () => {
         </div>
       </div>
     );
-  else
+  else {
     return (
       <div>
         <div className="controlsCard">
@@ -228,7 +228,10 @@ const Controls = () => {
               </Tabs>
             </Grid>
             <Grid item xs={5}>
-              <Grid container style={{ justifyContent: "flex-end", marginTop: 10 }}>
+              <Grid
+                container
+                style={{ justifyContent: "flex-end", marginTop: 10 }}
+              >
                 <Grid item xs={4} sm={6} lg={9}>
                   <Dropdown
                     isOpen={firstdropdownOpen}
@@ -336,6 +339,7 @@ const Controls = () => {
         <TableCard data={data} category={category} val={city.toUpperCase()} />
       </div>
     );
+  }
 };
 
 export default Controls;

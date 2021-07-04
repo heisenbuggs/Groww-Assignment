@@ -14,7 +14,7 @@ import {
 import { CallMade, Favorite, FavoriteBorder } from "@material-ui/icons";
 import SearchBar from "material-ui-search-bar";
 import MuiAlert from "@material-ui/lab/Alert";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/TableCard.css";
 
@@ -91,6 +91,11 @@ const TableCard = ({ data, category, val }) => {
   const [opensuccess, setOpenSuccess] = useState(false);
   const [openinfo, setOpeninfo] = useState(false);
   var vertical="bottom", horizontal="right";
+
+
+  useEffect(() => {
+    setRows(data);
+  }, [data])
 
   const handleClick = () => {
     setOpenSuccess(true);
