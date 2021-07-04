@@ -7,4 +7,8 @@
 
 .logoImage{
     margin: 20px 0;
+    height: 10rem;
+    max-height: 80px;
+    width: min-content;
+    max-width: 280px;
 }

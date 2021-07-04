@@ -13,7 +13,13 @@ import {
   TablePagination,
   Snackbar,
 } from "@material-ui/core";
-import { CallMade, Favorite, FavoriteBorder } from "@material-ui/icons";
+import {
+  CallMade,
+  Favorite,
+  FavoriteBorder,
+  FavoriteBorderOutlined,
+  List,
+} from "@material-ui/icons";
 import MuiAlert from "@material-ui/lab/Alert";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -194,13 +200,21 @@ const Favourite = () => {
               classes={{ indicator: classes.indicator }}
             >
               <Link to="/" style={{ textDecoration: "none", color: "#000" }}>
-                <StyledTab label="All Banks" {...a11yProps(0)} />
+                <StyledTab
+                  label="All Banks"
+                  icon={<List />}
+                  {...a11yProps(0)}
+                />
               </Link>
               <Link
                 to="/favourites"
                 style={{ textDecoration: "none", color: "#000" }}
               >
-                <StyledTab label="Favourites" {...a11yProps(1)} />
+                <StyledTab
+                  label="Favourites"
+                  icon={<FavoriteBorderOutlined />}
+                  {...a11yProps(1)}
+                />
               </Link>
             </Tabs>
           </Grid>

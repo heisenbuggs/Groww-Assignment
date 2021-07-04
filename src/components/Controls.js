@@ -20,6 +20,7 @@ import TableCard from "./TableCard";
 import brand from "../assets/Groww-Logo.png";
 import { Link } from "react-router-dom";
 import Loader from "react-loader-spinner";
+import { FavoriteBorderOutlined, List } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -128,7 +129,7 @@ const Controls = () => {
 
   useEffect(() => {
     var val = city.toUpperCase();
-    console.log(val+"CITY");
+    console.log(val + "CITY");
     if (localStorage.getItem("favourite") === null) {
       localStorage.setItem("favourite", JSON.stringify([]));
     }
@@ -191,7 +192,7 @@ const Controls = () => {
             width={120}
             color="#597AFB"
             secondaryColor="#43C799"
-            timeout={1000000}
+            timeout={100000}
           />
         </div>
       </div>
@@ -208,18 +209,26 @@ const Controls = () => {
                 classes={{ indicator: classes.indicator }}
               >
                 <Link to="/" style={{ textDecoration: "none", color: "#000" }}>
-                  <StyledTab label="All Banks" {...a11yProps(0)} />
+                  <StyledTab
+                    label="All Banks"
+                    icon={<List />}
+                    {...a11yProps(0)}
+                  />
                 </Link>
                 <Link
                   to="/favourites"
                   style={{ textDecoration: "none", color: "#000" }}
                 >
-                  <StyledTab label="Favourites" {...a11yProps(1)} />
+                  <StyledTab
+                    label="Favourites"
+                    icon={<FavoriteBorderOutlined />}
+                    {...a11yProps(1)}
+                  />
                 </Link>
               </Tabs>
             </Grid>
             <Grid item xs={5}>
-              <Grid container style={{ justifyContent: "flex-end" }}>
+              <Grid container style={{ justifyContent: "flex-end", marginTop: 10 }}>
                 <Grid item xs={4} sm={6} lg={9}>
                   <Dropdown
                     isOpen={firstdropdownOpen}

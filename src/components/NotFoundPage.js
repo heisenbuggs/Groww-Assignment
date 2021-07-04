@@ -1,8 +1,9 @@
-import { Container, Grid } from "@material-ui/core";
+import { Container, Grid, Button } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/NotFoundPage.css";
 import brand from "../assets/Groww-Logo.png";
+import { Block, MoodBad } from "@material-ui/icons";
 
 const NotFoundPage = () => {
   return (
@@ -15,19 +16,26 @@ const NotFoundPage = () => {
           className="notFoundCard"
           style={{ marginTop: 30, textAlign: "center" }}
         >
-          <h1>404</h1>
-          <h2>Page Not Found</h2>
-          <img
-            src={brand}
-            height={130}
-            width={440}
-            alt="logo"
-            className="logoImage"
-          />
+          <h1>4<MoodBad/>4</h1>
+          <h2>
+            Page Not Found <Block />
+          </h2>
+          <img src={brand} alt="logo" className="logoImage" />
           <h4>Seems like a Messed Up URL!!</h4>
-          <h5>
-            Return back to <Link to="/">Home.</Link>
-          </h5>
+          <div className="buttonBottom">
+            <Link to="/all-banks">
+              <Button
+                variant="outlined"
+                style={{
+                  textDecoration: "none",
+                  backgroundColor: "#597AFB",
+                  color: "#fff",
+                }}
+              >
+                Back To Home
+              </Button>
+            </Link>
+          </div>
         </Grid>
       </Grid>
     </Container>
