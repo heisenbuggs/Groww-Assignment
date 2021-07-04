@@ -202,7 +202,7 @@ const Controls = () => {
       <div>
         <div className="controlsCard">
           <Grid container className={classes.cont}>
-            <Grid item xs={5} md={6}>
+            <Grid item xs={6} md={4}>
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -227,7 +227,7 @@ const Controls = () => {
                 </Link>
               </Tabs>
             </Grid>
-            <Grid item xs={7} md={5}>
+            <Grid item xs={5}>
               <Grid container style={{ justifyContent: "flex-end", marginTop: 10 }}>
                 <Grid item xs={4} sm={6} lg={9}>
                   <Dropdown
