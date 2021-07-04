@@ -151,7 +151,6 @@ const TableCard = ({ data, category, val }) => {
     };
     const data = originalRows.find((row) => row.ifsc === id);
     var oldFav = JSON.parse(localStorage.getItem("favourite"));
-    // if data is present in oldfav then remove it else push it and update the localstorage of favourite
     var flag = true;
     var newFav = [];
     oldFav.forEach((row) => {
@@ -178,6 +177,7 @@ const TableCard = ({ data, category, val }) => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <StyledTableRow>
+              {/* {console.log(rows)} */}
                 {columns.map((column) => (
                   <StyledTableCell
                     key={column.id}

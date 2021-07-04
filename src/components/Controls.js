@@ -128,7 +128,7 @@ const Controls = () => {
   };
 
   useEffect(() => {
-    var val = city.toUpperCase();
+    var val = "MUMBAI";
     console.log(val + "CITY");
     if (localStorage.getItem("favourite") === null) {
       localStorage.setItem("favourite", JSON.stringify([]));
@@ -145,19 +145,20 @@ const Controls = () => {
       setIsLoaded(true);
       return;
     }
-
+    console.log(localStorage.getItem(val));
     if (localStorage.getItem(val) === null) {
       var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
       fetch(apiLink)
         .then((res) => {
           return res.json();
         })
-        .then((data) => {
+        .then((res) => {
           const now = new Date();
-          data = data.map((data) => ({ ...data, favourite: false }));
-          setData(data);
+          setData(res);
+          var info = res.map((data) => ({ ...data, favourite: false }));
+          setData(info);
           const item = {
-            data: data,
+            data: info,
             expiry: now.getTime() + 60 * 6000, // 1 hour Expiry Limit
           };
           localStorage.setItem(val, JSON.stringify(item));
@@ -167,7 +168,7 @@ const Controls = () => {
           console.log("Error fetching data : ", err);
         });
     }
-  }, [city]);
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -232,6 +233,7 @@ const Controls = () => {
                 container
                 style={{ justifyContent: "flex-end", marginTop: 10 }}
               >
+              {console.log(data)}
                 <Grid item xs={4} sm={6} lg={9}>
                   <Dropdown
                     isOpen={firstdropdownOpen}
