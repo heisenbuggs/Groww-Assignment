@@ -128,6 +128,7 @@ const Controls = () => {
 
   const fetchapi = (val) => {
     if (localStorage.getItem(val)) {
+      setIsLoaded(false);
       console.log("Data Grabbed!!!");
       const item = JSON.parse(localStorage.getItem(val));
       const now = new Date();
@@ -216,7 +217,7 @@ const Controls = () => {
             </Grid>
             <Grid item xs={5}>
               <Grid container style={{justifyContent: "flex-end"}}>
-                <Grid item xs={6} md={9}>
+                <Grid item xs={4} sm={6} lg={9}>
                   <Dropdown
                     isOpen={firstdropdownOpen}
                     toggle={() => toggle(firstdropdownOpen)}
@@ -272,7 +273,7 @@ const Controls = () => {
                     </DropdownMenu>
                   </Dropdown>
                 </Grid>
-                <Grid item xs={6} md={3} style={{ display: "flex" }}>
+                <Grid item xs={8} sm={6} lg={3} style={{ display: "flex" }}>
                   <Dropdown
                     isOpen={seconddropdownOpen}
                     toggle={() => toggletwo(seconddropdownOpen)}
