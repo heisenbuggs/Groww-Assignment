@@ -1,6 +1,7 @@
 import {
   makeStyles,
   Paper,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -8,9 +9,11 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  withStyles,
 } from "@material-ui/core";
 import { CallMade, Favorite, FavoriteBorder } from "@material-ui/icons";
 import SearchBar from "material-ui-search-bar";
+import MuiAlert from "@material-ui/lab/Alert";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/TableCard.css";
@@ -23,6 +26,10 @@ const useStyles = makeStyles({
     maxHeight: "auto",
   },
 });
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const columns = [
   { id: "bank_id", label: "Bank ID", minWidth: 100 },
@@ -56,6 +63,24 @@ const columns = [
   },
 ];
 
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: "#14A37F",
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 13,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
+
 const TableCard = ({ data, category, val }) => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
@@ -63,6 +88,27 @@ const TableCard = ({ data, category, val }) => {
   var originalRows = data;
   const [rows, setRows] = useState(originalRows);
   const [searched, setSearched] = useState("");
+  const [opensuccess, setOpenSuccess] = useState(false);
+  const [openinfo, setOpeninfo] = useState(false);
+  var vertical="bottom", horizontal="right";
+
+  const handleClick = () => {
+    setOpenSuccess(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") return;
+    setOpenSuccess(false);
+  };
+
+  const handleClickInfo = () => {
+    setOpeninfo(true);
+  };
+
+  const handleCloseInfo = (event, reason) => {
+    if (reason === "clickaway") return;
+    setOpeninfo(false);
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -88,28 +134,27 @@ const TableCard = ({ data, category, val }) => {
   };
 
   const favClick = (id) => {
-    originalRows.map((row) => {
+    originalRows.forEach((row) => {
       if (row.ifsc === id) {
         row.favourite = !row.favourite;
       }
     });
     const item = JSON.parse(localStorage.getItem(val));
     const newItem = {
-      data : originalRows,
-      expiry : item.expiry
-    }
-    const data = originalRows.find(row => row.ifsc===id);
+      data: originalRows,
+      expiry: item.expiry,
+    };
+    const data = originalRows.find((row) => row.ifsc === id);
     var oldFav = JSON.parse(localStorage.getItem("favourite"));
     // if data is present in oldfav then remove it else push it and update the localstorage of favourite
     var flag = true;
-    var newFav = []
-    oldFav.map((row) => {
-      if(row.ifsc!==data.ifsc) {
+    var newFav = [];
+    oldFav.forEach((row) => {
+      if (row.ifsc !== data.ifsc) {
         newFav.push(row);
-      } 
-      else flag = false;
-    })
-    if(flag) newFav.push(data);
+      } else flag = false;
+    });
+    if (flag) newFav.push(data);
     localStorage.setItem("favourite", JSON.stringify(newFav));
     localStorage.setItem(val, JSON.stringify(newItem));
     setRows(originalRows);
@@ -122,28 +167,29 @@ const TableCard = ({ data, category, val }) => {
           value={searched}
           onChange={(searchVal) => requestSearch(searchVal)}
           onCancelSearch={() => cancelSearch()}
+          className="searchbar"
         />
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              <TableRow>
+              <StyledTableRow>
                 {columns.map((column) => (
-                  <TableCell
+                  <StyledTableCell
                     key={column.id}
                     align={column.align}
                     style={{ minWidth: column.minWidth }}
                   >
                     <b>{column.label}</b>
-                  </TableCell>
+                  </StyledTableCell>
                 ))}
-              </TableRow>
+              </StyledTableRow>
             </TableHead>
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
-                    <TableRow
+                    <StyledTableRow
                       hover
                       role="checkbox"
                       tabIndex={-1}
@@ -152,7 +198,7 @@ const TableCard = ({ data, category, val }) => {
                       {columns.map((column) => {
                         const value = row[column.id];
                         return (
-                          <TableCell key={column.id} align={column.align}>
+                          <StyledTableCell key={column.id} align={column.align}>
                             {column.format && column.id !== "bank_name"
                               ? column.format(value)
                               : value}
@@ -167,22 +213,51 @@ const TableCard = ({ data, category, val }) => {
                               </Link>
                             )}
                             {column.id === "favourite" && !row.favourite && (
-                              <div onClick={() => favClick(row.ifsc)}>
+                              <div
+                                onClick={() => {
+                                  favClick(row.ifsc);
+                                  handleClick();
+                                }}
+                              >
                                 <FavoriteBorder />
                               </div>
                             )}
                             {column.id === "favourite" && row.favourite && (
-                              <div onClick={() => favClick(row.ifsc)}>
-                                {console.log(row.favourite)}
+                              <div
+                                onClick={() => {
+                                  favClick(row.ifsc);
+                                  handleClickInfo();
+                                }}
+                              >
                                 <Favorite style={{ color: "#43CF99" }} />
                               </div>
                             )}
-                          </TableCell>
+                          </StyledTableCell>
                         );
                       })}
-                    </TableRow>
+                    </StyledTableRow>
                   );
                 })}
+              <Snackbar
+                open={opensuccess}
+                autoHideDuration={2000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical, horizontal }}
+              >
+                <Alert onClose={handleClose} severity="success">
+                  Bank Added to Favourites!!
+                </Alert>
+              </Snackbar>
+              <Snackbar
+                open={openinfo}
+                autoHideDuration={2000}
+                onClose={handleCloseInfo}
+                anchorOrigin={{ vertical, horizontal }}
+              >
+                <Alert onClose={handleCloseInfo} severity="info">
+                  Bank Removed from Favourites!!
+                </Alert>
+              </Snackbar>
             </TableBody>
           </Table>
         </TableContainer>

@@ -2,7 +2,7 @@
     background-color: #fff;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin-top: 20px;
-    border-radius: 7px;
+    border-radius: 3px;
 }
 
 .btn {
@@ -28,4 +28,16 @@
     align-self: center;
     justify-self: center;
     margin-top: -30px;
+}
+
+.dropdown-item:hover {
+    background-color: #597AFB;
+}
+
+.menu .dropdown-item:hover {
+    background-color: #43C799;
+}
+
+.heading {
+    padding: 10px 0;
 }

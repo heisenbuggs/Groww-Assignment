@@ -19,7 +19,6 @@ import PropTypes from "prop-types";
 import TableCard from "./TableCard";
 import brand from "../assets/Groww-Logo.png";
 import { Link } from "react-router-dom";
-import Favourite from "./Favourite";
 import Loader from "react-loader-spinner";
 
 const useStyles = makeStyles((theme) => ({
@@ -125,7 +124,7 @@ const Controls = () => {
           console.log("Error fetching data : ", err);
         });
     }
-  }, []);
+  }, [city]);
 
   const fetchapi = (val) => {
     if (localStorage.getItem(val)) {
@@ -216,8 +215,8 @@ const Controls = () => {
               </Tabs>
             </Grid>
             <Grid item xs={5}>
-              <Grid container>
-                <Grid item xs={6}>
+              <Grid container style={{justifyContent: "flex-end"}}>
+                <Grid item xs={6} md={9}>
                   <Dropdown
                     isOpen={firstdropdownOpen}
                     toggle={() => toggle(firstdropdownOpen)}
@@ -273,7 +272,7 @@ const Controls = () => {
                     </DropdownMenu>
                   </Dropdown>
                 </Grid>
-                <Grid item xs={6} style={{ display: "flex" }}>
+                <Grid item xs={6} md={3} style={{ display: "flex" }}>
                   <Dropdown
                     isOpen={seconddropdownOpen}
                     toggle={() => toggletwo(seconddropdownOpen)}
@@ -281,7 +280,7 @@ const Controls = () => {
                     <DropdownToggle caret color="success">
                       {cat}
                     </DropdownToggle>
-                    <DropdownMenu>
+                    <DropdownMenu className="menu">
                       <DropdownItem
                         onClick={() => {
                           setCat("None");

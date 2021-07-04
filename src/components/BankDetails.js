@@ -10,6 +10,16 @@ const BankDetails = (props) => {
 
   return (
     <Container>
+      <Grid
+        item
+        xs={12}
+        className="controlsCard"
+        style={{ marginTop: 30, textAlign: "center" }}
+      >
+        <div className="heading">
+          <h4>{row.bank_name}</h4>
+        </div>
+      </Grid>
       <Grid container style={{ textAlign: "center" }}>
         <Grid item xs={3}></Grid>
         <Grid
@@ -18,8 +28,7 @@ const BankDetails = (props) => {
           className="controlsCard"
           style={{ marginTop: 30, textAlign: "center" }}
         >
-          <h4 style={{ marginTop: 10 }}>{row.bank_name}</h4>
-          <p style={{ textAlign: "left", marginLeft: 10 }}>
+          <p style={{ textAlign: "left", marginLeft: 10, marginTop: 20 }}>
             <p>
               <b>Bank ID : </b>
               {`${row.bank_id}\n`}
@@ -53,7 +62,9 @@ const BankDetails = (props) => {
               {`${row.state}`}
             </p>
           </p>
-          <h6>Return Back to <Link to="/all-banks">Home</Link></h6>
+          <h6>
+            Return Back to <Link to="/all-banks">Home</Link>
+          </h6>
         </Grid>
       </Grid>
     </Container>
