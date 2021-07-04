@@ -85,59 +85,20 @@ const Controls = () => {
   const [data, setData] = useState([]);
   const [category, setCategory] = useState("");
 
-  useEffect(() => {
-    var val = city.toUpperCase();
-    if(localStorage.getItem("favourite")===null) {
-      localStorage.setItem("favourite", JSON.stringify([]));
-    }
-    if (localStorage.getItem(val)) {
-      console.log("Data Grabbed!!!");
-      const item = JSON.parse(localStorage.getItem(val));
-      const now = new Date();
-      if (now.getTime() > item.expiry) {
-        localStorage.removeItem(val);
-      } else {
-        setData(item.data);
-      }
-      setIsLoaded(true);
-      return;
-    }
-
-    if (localStorage.getItem(val)===null) {
-      var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
-      fetch(apiLink)
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          const now = new Date();
-          data = data.map((data) => ({ ...data, favourite: false }));
-          setData(data);
-          const item = {
-            data: data,
-            expiry: now.getTime() + 60*6000, // 1 hour Expiry Limit
-          };
-          localStorage.setItem(val, JSON.stringify(item));
-          setIsLoaded(true);
-        })
-        .catch((err) => {
-          console.log("Error fetching data : ", err);
-        });
-    }
-  }, [city]);
-
   const fetchapi = (val) => {
     if (localStorage.getItem(val)) {
-      setIsLoaded(false);
-      console.log("Data Grabbed!!!");
-      const item = JSON.parse(localStorage.getItem(val));
-      const now = new Date();
-      if (now.getTime() > item.expiry) {
-        localStorage.removeItem(val);
-      } else {
-        setData(item.data);
-      }
-      setIsLoaded(true);
+      setTimeout(() => {
+        setIsLoaded(false);
+        console.log("Data Grabbed!!!");
+        const item = JSON.parse(localStorage.getItem(val));
+        const now = new Date();
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(val);
+        } else {
+          setData(item.data);
+        }
+        setIsLoaded(true);
+      }, 200);
       return;
     }
 
@@ -154,7 +115,7 @@ const Controls = () => {
           setData(data);
           const item = {
             data: data,
-            expiry: now.getTime() + 60*6000, // 1 hour Expiry Limit
+            expiry: now.getTime() + 60 * 6000, // 1 hour Expiry Limit
           };
           localStorage.setItem(val, JSON.stringify(item));
           setIsLoaded(true);
@@ -164,6 +125,46 @@ const Controls = () => {
         });
     }
   };
+
+  useEffect(() => {
+    var val = city.toUpperCase();
+    if (localStorage.getItem("favourite") === null) {
+      localStorage.setItem("favourite", JSON.stringify([]));
+    }
+    if (localStorage.getItem(val)) {
+      const item = JSON.parse(localStorage.getItem(val));
+      const now = new Date();
+      if (now.getTime() > item.expiry) {
+        localStorage.removeItem(val);
+      } else {
+        setData(item.data);
+      }
+      setIsLoaded(true);
+      return;
+    }
+
+    if (localStorage.getItem(val) === null) {
+      var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
+      fetch(apiLink)
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          const now = new Date();
+          data = data.map((data) => ({ ...data, favourite: false }));
+          setData(data);
+          const item = {
+            data: data,
+            expiry: now.getTime() + 60 * 6000, // 1 hour Expiry Limit
+          };
+          localStorage.setItem(val, JSON.stringify(item));
+          setIsLoaded(true);
+        })
+        .catch((err) => {
+          console.log("Error fetching data : ", err);
+        });
+    }
+  }, [city]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -216,7 +217,7 @@ const Controls = () => {
               </Tabs>
             </Grid>
             <Grid item xs={5}>
-              <Grid container style={{justifyContent: "flex-end"}}>
+              <Grid container style={{ justifyContent: "flex-end" }}>
                 <Grid item xs={4} sm={6} lg={9}>
                   <Dropdown
                     isOpen={firstdropdownOpen}
@@ -321,7 +322,7 @@ const Controls = () => {
             </Grid>
           </Grid>
         </div>
-        <TableCard data={data} category={category} val={city.toUpperCase()}/>
+        <TableCard data={data} category={category} val={city.toUpperCase()} />
       </div>
     );
 };

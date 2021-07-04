@@ -1,4 +1,4 @@
-import { Container, Grid } from "@material-ui/core";
+import { Container, Grid, Button } from "@material-ui/core";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../styles/Controls.css";
@@ -62,9 +62,16 @@ const BankDetails = (props) => {
               {`${row.state}`}
             </p>
           </p>
-          <h6>
-            Return Back to <Link to="/all-banks">Home</Link>
-          </h6>
+          <div className="buttonBottom">
+            <Link to="/all-banks">
+              <Button
+                variant="outlined"
+                style={{ textDecoration: "none", backgroundColor: "#597AFB", color: "#fff" }}
+              >
+                Back To Home
+              </Button>
+            </Link>
+          </div>
         </Grid>
       </Grid>
     </Container>
