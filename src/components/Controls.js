@@ -146,7 +146,10 @@ const Controls = () => {
       return;
     }
     console.log(localStorage.getItem(val));
-    if (localStorage.getItem(val) === null) {
+    if (
+      localStorage.getItem(val) === null ||
+      localStorage.getItem(val) === []
+    ) {
       var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
       fetch(apiLink)
         .then((res) => {
