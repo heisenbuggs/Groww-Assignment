@@ -193,7 +193,7 @@ const Controls = () => {
             width={120}
             color="#597AFB"
             secondaryColor="#43C799"
-            timeout={100000}
+            timeout={80000}
           />
         </div>
       </div>
