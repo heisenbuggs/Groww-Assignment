@@ -128,48 +128,46 @@ const Controls = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      var val = "MUMBAI";
-      console.log(val + "CITY");
-      if (localStorage.getItem("favourite") === null) {
-        localStorage.setItem("favourite", JSON.stringify([]));
-      }
+    var val = "MUMBAI";
+    console.log(val + "CITY");
+    if (localStorage.getItem("favourite") === null) {
+      localStorage.setItem("favourite", JSON.stringify([]));
+    }
 
-      if (localStorage.getItem(val)) {
-        const item = JSON.parse(localStorage.getItem(val));
-        const now = new Date();
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(val);
-        } else {
-          setData(item.data);
-        }
-        setIsLoaded(true);
-        return;
+    if (localStorage.getItem(val)) {
+      const item = JSON.parse(localStorage.getItem(val));
+      const now = new Date();
+      if (now.getTime() > item.expiry) {
+        localStorage.removeItem(val);
+      } else {
+        setData(item.data);
       }
-      console.log(localStorage.getItem(val));
-      if (localStorage.getItem(val) === null) {
-        var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
-        fetch(apiLink)
-          .then((res) => {
-            return res.json();
-          })
-          .then((res) => {
-            const now = new Date();
-            setData(res);
-            var info = res.map((data) => ({ ...data, favourite: false }));
-            setData(info);
-            const item = {
-              data: info,
-              expiry: now.getTime() + 60 * 6000, // 1 hour Expiry Limit
-            };
-            localStorage.setItem(val, JSON.stringify(item));
-            setIsLoaded(true);
-          })
-          .catch((err) => {
-            console.log("Error fetching data : ", err);
-          });
-      }
-    }, 6000);
+      setIsLoaded(true);
+      return;
+    }
+    console.log(localStorage.getItem(val));
+    if (localStorage.getItem(val) === null) {
+      var apiLink = `https://vast-shore-74260.herokuapp.com/banks?city=${val}`;
+      fetch(apiLink)
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          const now = new Date();
+          setData(res);
+          var info = res.map((data) => ({ ...data, favourite: false }));
+          setData(info);
+          const item = {
+            data: info,
+            expiry: now.getTime() + 60 * 6000, // 1 hour Expiry Limit
+          };
+          localStorage.setItem(val, JSON.stringify(item));
+          setIsLoaded(true);
+        })
+        .catch((err) => {
+          console.log("Error fetching data : ", err);
+        });
+    }
   }, []);
 
   const handleChange = (event, newValue) => {
